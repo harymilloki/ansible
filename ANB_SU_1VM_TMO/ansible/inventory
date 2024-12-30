@@ -1,0 +1,10 @@
+all:
+  hosts:
+    TMO:
+      ansible_host: "{{ tmo_host }}"
+      ansible_ssh_private_key_file: "{{ private_key }}"
+      ansible_user: "{{ user }}"
+    VMTCA:
+      ansible_host: "{{ vmtca_host }}"
+      ansible_user: "{{ vmtca_user }}"
+      ansible_password: "{{ vmtca_root_password }}"

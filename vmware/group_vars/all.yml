@@ -1,0 +1,16 @@
+username: root
+password: Arthur_123
+
+vcenters:
+  - name: vsp26
+    hostname: 10.93.134.243
+    username: "{{ username }}"
+    password: "{{ password }}"
+  - name: vsp28
+    hostname: 10.93.139.77
+    username: "{{ username }}"
+    password: "{{ password }}"
+  - name: sprintlab829
+    hostname: 100.79.44.94
+    username: "{{ username }}"
+    password: "{{ password }}"

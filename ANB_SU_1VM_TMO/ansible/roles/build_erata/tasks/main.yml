@@ -1,0 +1,7 @@
+- name: Create installed packages list on the TMO LAB
+  ansible.builtin.include_tasks: create_installed_packages_list.yml
+  when: inventory_hostname == "TMO"
+
+- name: ERATA CREATE
+  ansible.builtin.include_tasks: erata_create.yml
+  when: inventory_hostname == "VMTCA"

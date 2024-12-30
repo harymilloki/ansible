@@ -1,0 +1,5 @@
+- name: Build ERATA for RHEL
+  hosts: all
+  become: true
+  roles:
+   - build_erata

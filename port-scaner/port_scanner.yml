@@ -1,0 +1,42 @@
+---
+- name: Port Scanner with Ansible
+  hosts: localhost
+  gather_facts: no
+  vars:
+    hosts_to_scan:
+      - 10.93.140.8
+    ports_to_scan:
+      - 22
+      - 80
+      - 443
+      - 8080
+  tasks:
+    - name: Scan ports
+      command: nc -z -v -w 2 {{ item.host }} {{ item.port }}
+      register: scan_result
+      with_items: "{{ hosts_to_scan | product(ports_to_scan) | map('flatten') | list }}"
+      loop_control:
+        label: "{{ item[0] }}:{{ item[1] }}"
+      ignore_errors: yes
+
+    - name: Parse scan results
+      set_fact:
+        open_ports: "{{ open_ports | default([]) + [{'host': item.item[0], 'port': item.item[1], 'status': 'open'}] }}"
+      when: "'succeeded' in scan_result.results[loop.index0].stdout"
+      with_items: "{{ scan_result.results }}"
+      loop_control:
+        index_var: loop_index
+
+    - name: Save results to a file
+      copy:
+        content: |
+          Open Ports Report:
+          {% for entry in open_ports %}
+          Host: {{ entry.host }}, Port: {{ entry.port }}, Status: {{ entry.status }}
+          {% endfor %}
+        dest: ./port_scan_report.txt
+
+    - name: Display results
+      debug:
+        msg: "Host: {{ item.host }}, Port: {{ item.port }} is open."
+      with_items: "{{ open_ports }}"

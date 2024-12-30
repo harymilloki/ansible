@@ -1,0 +1,10 @@
+- name: Execute local script on the remote host
+  ansible.builtin.script:
+    cmd: ../sh/installed_packages_list.sh
+
+- name: Fetch installed_packages_list.txt from TMO to localhost
+  ansible.builtin.fetch:
+    src: "/home/su/installed_packages_list.txt"
+    dest: "../sh/installed_packages_list.txt"
+    flat: yes
+    force: true

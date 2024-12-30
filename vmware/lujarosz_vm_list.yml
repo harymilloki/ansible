@@ -1,0 +1,25 @@
+---
+- name: Wyświetlanie maszyn wirtualnych z wybranego vCenter
+  hosts: localhost
+  gather_facts: false
+  vars_prompt:
+    - name: "selected_vcenter"
+      prompt: "Podaj nazwę vCenter (np. vsp26, vsp28, sprintlab829)"
+      private: false
+
+  tasks:
+    - name: Wybierz vCenter na podstawie nazwy
+      ansible.builtin.set_fact:
+        vcenter: "{{ vcenters | selectattr('name', 'equalto', selected_vcenter) | first }}"
+
+    - name: Pobierz informacje o maszynach wirtualnych
+      community.vmware.vmware_vm_info:
+        hostname: "{{ vcenter.hostname }}"
+        username: "{{ vcenter.username }}"
+        password: "{{ vcenter.password }}"
+        validate_certs: false
+      register: vm_info
+
+    - name: Wyświetl pełne dane maszyn jako YAML
+      ansible.builtin.debug:
+        msg: "{{ vm_info.virtual_machines | selectattr('guest_name', 'search', '^lujarosz') | list | to_nice_yaml }}"

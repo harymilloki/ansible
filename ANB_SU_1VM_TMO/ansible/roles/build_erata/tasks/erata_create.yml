@@ -1,0 +1,27 @@
+- name: Copy TMO installed packages list file to the VMTCA host
+  ansible.builtin.copy:
+    src: "../sh/installed_packages_list.txt"
+    dest: /home
+    mode: '0755'
+    force: true
+
+- name: Execute local script on the remote host
+  ansible.builtin.script:
+    cmd: ../sh/repo_create.sh
+
+- name: Archive the repository directory
+  ansible.builtin.archive:
+    path: "/home/rpm_update/erata_tmo_su/cumulative_rpms_{{ ansible_date_time.date }}"
+    dest: "/home/rpm_update/erata_tmo_su/SU_TMO_ERATA_{{ ansible_date_time.date }}.tar.gz"
+    format: gz
+
+- name: Verify the archive file exists
+  ansible.builtin.stat:
+    path: "/home/rpm_update/erata_tmo_su/SU_TMO_ERATA_{{ ansible_date_time.date }}.tar.gz"
+  register: archive_status
+
+- name: Report archive creation
+  ansible.builtin.debug:
+    msg: >
+      The archive {{ archive_status.stat.path }} was created successfully
+      and is {{ archive_status.stat.size }} bytes in size.

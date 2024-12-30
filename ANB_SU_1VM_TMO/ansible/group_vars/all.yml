@@ -1,0 +1,8 @@
+tmo_host: 10.93.139.80
+vmtca_host: 100.79.44.143
+vmtca_root_password: "crvmtemplate"
+vmtca_user: "root"
+files_path: "files/"
+private_key: "./id_rsa"
+sh_scripts_dir: "./sh"
+user: "admin"

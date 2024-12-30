@@ -1,0 +1,6 @@
+{
+    "ansible.python.interpreterPath": "/bin/python3",
+    "yaml.schemas": {
+        "https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/ansible.json#/$defs/tasks": "file:///home/user/nokia_data/ansible/TMO-UPGRADE/automation_tmo_su/ansible/roles/build_erata/tasks/download_rpms.yml"
+    }
+}
